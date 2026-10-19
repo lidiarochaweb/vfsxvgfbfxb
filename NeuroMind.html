@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NeuroMind</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f6ff;--surf:#fff;--ink:#0d1b3d;--mut:#55607f;--line:#d7def2;--a:#2f5bff;--v:#7c4dff;--ok:#0f9d78;--p0:#3b6cff;--p1:#8a5cf6;--p2:#14b8a6;--p3:#f59e0b;--ring:rgba(47,91,255,.18)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#070d22;--surf:#101a3a;--ink:#eaf0ff;--mut:#9fb0d9;--line:#233260;--a:#6f8dff;--v:#a58bff;--ok:#3ddcb0;--ring:rgba(111,141,255,.22)}}
+:root[data-theme="dark"]{--bg:#070d22;--surf:#101a3a;--ink:#eaf0ff;--mut:#9fb0d9;--line:#233260;--a:#6f8dff;--v:#a58bff;--ok:#3ddcb0;--ring:rgba(111,141,255,.22)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 Sora,system-ui,-apple-system,"Segoe UI",sans-serif}
+h1,h2,h3{line-height:1.2;margin:0 0 .5em}
+p{margin:0 0 1em;max-width:62ch}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--a);outline-offset:3px}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px 56px}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between;padding:18px 0}
+.logo{font-weight:700;font-size:1.25rem;display:flex;align-items:center;gap:10px}
+.logo i{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--a),var(--v));display:grid;place-items:center;color:#fff;font-style:normal;font-size:.95rem}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+nav button,.ghost{background:none;border:1px solid transparent;border-radius:999px;padding:8px 16px}
+nav button[aria-current=page]{background:var(--surf);border-color:var(--line);font-weight:600}
+.btn{background:linear-gradient(135deg,var(--a),var(--v));color:#fff;border:0;border-radius:12px;padding:13px 24px;font-weight:600}
+.btn.sec{background:var(--surf);color:var(--ink);border:1px solid var(--line)}
+.btn:hover{filter:brightness(1.08)}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:18px;padding:24px}
+[hidden]{display:none!important}
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center;padding:28px 0 36px}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);letter-spacing:-.02em}
+.hero .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.demo{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:260px;margin:auto}
+.demo span{aspect-ratio:1;border-radius:18px;display:grid;place-items:center;color:#fff;font-size:1.8rem;opacity:.45}
+.demo span:nth-child(1){background:var(--p0)}.demo span:nth-child(2){background:var(--p1)}.demo span:nth-child(3){background:var(--p3)}.demo span:nth-child(4){background:var(--p2)}
+@media (prefers-reduced-motion:no-preference){.demo span{animation:lit 6s infinite}.demo span:nth-child(2){animation-delay:1s}.demo span:nth-child(4){animation-delay:2s}.demo span:nth-child(3){animation-delay:3s}}
+@keyframes lit{0%,12%{opacity:1;transform:scale(1.06)}20%,100%{opacity:.45;transform:none}}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+.game{text-align:left;display:flex;flex-direction:column;gap:6px;transition:border-color .2s}
+.game:hover{border-color:var(--a)}
+.game .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:1.4rem;background:var(--ring);color:var(--a)}
+.tag{font-size:.82rem;color:var(--mut)}
+.note{border-left:4px solid var(--v);background:var(--ring);padding:14px 18px;border-radius:0 12px 12px 0;font-size:.92rem;margin-top:28px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:18px}
+.stat b{display:block;font-size:1.8rem}
+.bar{height:10px;border-radius:9px;background:var(--line);overflow:hidden;margin:6px 0 16px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--v));border-radius:9px}
+.medals{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none}
+.medals li{border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.9rem;opacity:.5}
+.medals li.on{opacity:1;border-color:var(--ok);color:var(--ok)}
+.stage{max-width:620px;margin:10px auto;text-align:center}
+.stage .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.msg{min-height:1.6em;font-weight:600}
+.sub{color:var(--mut)}
+.pads{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:340px;margin:16px auto}
+.pad{aspect-ratio:1;border:0;border-radius:22px;color:#fff;font-size:2.2rem;opacity:.5;transition:opacity .15s,transform .15s}
+.pad.on{opacity:1;transform:scale(1.05);box-shadow:0 0 0 5px var(--ring),0 0 26px currentColor}
+.p0{background:var(--p0)}.p1{background:var(--p1)}.p2{background:var(--p2)}.p3{background:var(--p3)}
+.tgt{font-size:2.4rem;color:var(--a)}
+.cells{display:grid;gap:8px;max-width:400px;margin:14px auto}
+.cells button{aspect-ratio:1;background:var(--surf);border:1px solid var(--line);border-radius:12px;font-size:1.6rem}
+.cells button:hover{border-color:var(--a)}
+.stim{height:150px;display:grid;place-items:center;font-size:5rem;line-height:1}
+.stim small{display:block;font-size:.95rem;color:var(--mut)}
+.orb{width:180px;height:180px;margin:24px auto;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--v),var(--a));box-shadow:0 0 0 14px var(--ring);transform:scale(.6)}
+.orb.in{transform:scale(1);transition:transform 4s ease-in-out}
+.orb.out{transform:scale(.6);transition:transform 6s ease-in-out}
+@media (prefers-reduced-motion:reduce){.orb,.orb.in,.orb.out{transition:none}.orb.in{transform:scale(1)}}
+.res td{padding:6px 14px;text-align:left}.res{margin:12px auto;border-collapse:collapse}
+select{font:inherit;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surf);color:var(--ink)}
+.row2{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 20px;border-radius:999px;font-size:.9rem}
+@media (max-width:720px){.hero{grid-template-columns:1fr}.demo{order:-1;max-width:150px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div class="logo"><i aria-hidden="true">✦</i>NeuroMind</div>
+ <nav aria-label="Principal">
+  <button data-v="home">Início</button><button data-v="games">Jogos</button><button data-v="progress">Evolução</button>
+  <button class="ghost" id="theme" aria-label="Alternar tema claro e escuro">◐ Tema</button>
+ </nav>
+</header>
+
+<main>
+<section id="home">
+ <div class="hero">
+  <div>
+   <h1>Desafie sua mente. Desenvolva seu potencial.</h1>
+   <p>Quatro atividades curtas para exercitar memória, atenção e concentração, mais uma pausa guiada de respiração para desacelerar. Sem cadastro: seu progresso fica salvo neste aparelho.</p>
+   <div class="row"><button class="btn" data-go="games">Começar a jogar</button><button class="btn sec" data-go="progress">Conheça sua evolução</button></div>
+  </div>
+  <div class="demo" aria-hidden="true"><span>▲</span><span>●</span><span>■</span><span>◆</span></div>
+ </div>
+ <div class="grid" id="skills"></div>
+ <div class="note"><b>O que o NeuroMind é, e o que não é.</b> É um treino lúdico: você pratica tarefas inspiradas na psicologia cognitiva e uma técnica simples de respiração. Não diagnostica, não trata e não previne transtornos como TDAH, ansiedade ou depressão, e melhorar nos jogos não garante melhora automática na vida cotidiana. Se algo o preocupa, procure um profissional de saúde.</div>
+</section>
+
+<section id="games" hidden>
+ <h2>Central de jogos</h2>
+ <div class="grid" id="list"></div>
+</section>
+
+<section id="stage" class="stage" hidden></section>
+
+<section id="progress" hidden>
+ <h2>Sua evolução</h2>
+ <div class="stats" id="stats"></div>
+ <div class="card"><h3>Desempenho por habilidade</h3><div id="skillbars"></div></div>
+ <div class="card" style="margin-top:16px"><h3>Conquistas</h3><ul class="medals" id="medals"></ul></div>
+ <p class="sub" style="margin-top:16px">Os dados ficam só neste navegador. <button class="ghost" id="reset" style="border-color:var(--line)">Apagar meu progresso</button></p>
+</section>
+</main>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+const $=s=>document.querySelector(s),sl=ms=>new Promise(r=>setTimeout(r,ms));
+let S;try{S=JSON.parse(localStorage.getItem("nm"))}catch(e){}
+S=S||{xp:0,days:[],best:{mem:0,att:0,foc:0},med:0,n:0};
+const save=()=>{try{localStorage.setItem("nm",JSON.stringify(S))}catch(e){}};
+const today=()=>new Date().toLocaleDateString("sv");
+const lvl=()=>Math.floor(Math.sqrt(S.xp/40))+1;
+function streak(){let n=0,d=new Date();if(!S.days.includes(today()))d.setDate(d.getDate()-1);
+ while(S.days.includes(d.toLocaleDateString("sv"))){n++;d.setDate(d.getDate()-1)}return n}
+function award(xp){xp=Math.max(0,Math.round(xp));S.xp+=xp;S.n++;if(!S.days.includes(today()))S.days.push(today());save();
+ const t=$("#toast");t.textContent="+"+xp+" XP";t.hidden=false;setTimeout(()=>t.hidden=true,2200)}
+let cleanup=()=>{};
+function show(v){cleanup();cleanup=()=>{};["home","games","stage","progress"].forEach(id=>$("#"+id).hidden=id!==v);
+ document.querySelectorAll("nav [data-v]").forEach(b=>{if(b.dataset.v===(v==="stage"?"games":v))b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
+ if(v==="games")renderGames();if(v==="progress")renderProgress();window.scrollTo(0,0)}
+document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>show(b.dataset.v));
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));
+$("#theme").onclick=()=>{const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;r.dataset.theme=dark?"light":"dark"};
+
+const G=[
+{id:"mem",ic:"▲",name:"Memória em Sequência",skill:"Memória de curto prazo",desc:"Observe a sequência de luzes e repita na mesma ordem. Ela cresce a cada acerto.",how:"Os botões acendem em uma ordem. Quando disser “Sua vez”, toque nos botões na mesma ordem. Cada rodada acrescenta um passo."},
+{id:"att",ic:"◐",name:"Caça ao Alvo",skill:"Atenção seletiva",desc:"Encontre o símbolo-alvo entre distratores parecidos. Dez rodadas.",how:"O alvo aparece no topo. Encontre-o na grade e toque nele. A grade cresce ao longo das rodadas. Contam acertos e tempo, então não precisa correr."},
+{id:"foc",ic:"●",name:"Foco Sustentado",skill:"Concentração",desc:"Responda só quando surgir o círculo azul. Ignore o resto.",how:"Formas coloridas aparecem uma a uma. Toque em “Responder” (ou tecle Espaço) apenas quando for um círculo azul. Você pode pausar a qualquer momento.",opt:["Duração",[[30,"30 segundos"],[60,"1 minuto"],[90,"90 segundos"]]]},
+{id:"res",ic:"◯",name:"Pausa e Respiração",skill:"Atenção plena e calma",desc:"Um círculo guia inspirações e expirações confortáveis. Sem retenção do ar.",how:"Inspire pelo nariz quando o círculo crescer e solte o ar devagar quando ele diminuir. Respire num ritmo confortável; se sentir tontura, volte ao ritmo normal. Você pode parar quando quiser.",opt:["Duração",[[60,"1 minuto"],[180,"3 minutos"],[300,"5 minutos"]]]}];
+const bestTxt=g=>g.id==="mem"?(S.best.mem?"Melhor: nível "+S.best.mem:"Ainda sem partidas"):g.id==="att"?(S.best.att?"Melhor precisão: "+S.best.att+"%":"Ainda sem partidas"):g.id==="foc"?(S.best.foc?"Melhor acerto: "+S.best.foc+"%":"Ainda sem partidas"):(S.med?"Total: "+S.med.toFixed(1)+" min":"Ainda sem pausas");
+$("#skills").innerHTML=G.map(g=>`<div class="card"><div class="ic" style="width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--ring);color:var(--a)" aria-hidden="true">${g.ic}</div><h3 style="margin-top:12px;font-size:1.05rem">${g.skill}</h3><p class="tag" style="margin:0">${g.name}</p></div>`).join("");
+function renderGames(){$("#list").innerHTML=G.map(g=>`<button class="card game" data-g="${g.id}"><span class="ic" aria-hidden="true">${g.ic}</span><h3>${g.name}</h3><span class="tag">${g.skill}</span><span>${g.desc}</span><span class="tag">${bestTxt(g)}</span></button>`).join("");
+ document.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>intro(G.find(g=>g.id===b.dataset.g)))}
+function intro(g){show("stage");const o=g.opt;
+ $("#stage").innerHTML=`<div class="card"><h2>${g.name}</h2><p class="sub" style="margin-inline:auto">${g.how}</p>${o?`<p><label>${o[0]}: <select id="opt">${o[1].map(x=>`<option value="${x[0]}">${x[1]}</option>`).join("")}</select></label></p>`:""}<div class="row2"><button class="btn" id="go">Iniciar</button><button class="btn sec" id="back">Voltar</button></div></div>`;
+ $("#back").onclick=()=>show("games");$("#go").onclick=()=>run(g)}
+function run(g){const box=$("#stage");let alive=true;cleanup=()=>{alive=false};
+ const live=()=>alive;const v=$("#opt")?+$("#opt").value:0;
+ box.innerHTML=`<div class="card"><div class="top"><b>${g.name}</b><button class="btn sec" id="quit" style="padding:8px 16px">${g.id==="res"?"Parar":"Sair"}</button></div><div id="g"></div></div>`;
+ $("#quit").onclick=()=>{if(g.id==="res"&&window.endRes)window.endRes();else show("games")};
+ const done=(rows,xp)=>{if(!live())return;award(xp);cleanup=()=>{};$("#g").innerHTML=`<h3>Resultado</h3><table class="res">${rows.map(r=>`<tr><td>${r[0]}</td><td><b>${r[1]}</b></td></tr>`).join("")}</table><div class="row2"><button class="btn" id="again">Jogar de novo</button><button class="btn sec" id="menu">Central de jogos</button></div>`;
+  $("#again").onclick=()=>intro(g);$("#menu").onclick=()=>show("games")};
+ ({mem:memory,att:attention,foc:focus,res:breathe})[g.id]($("#g"),done,live,v)}
+
+function memory(box,done,live){const sym=["▲","●","■","◆"];let seq=[],pos=0,busy=true;
+ box.innerHTML=`<p class="msg" id="m" aria-live="polite"></p><div class="pads">${sym.map((s,i)=>`<button class="pad p${i}" data-i="${i}" aria-label="Botão ${i+1}, ${["triângulo","círculo","quadrado","losango"][i]}">${s}</button>`).join("")}</div><p class="sub">Sequência: <b id="n">0</b></p>`;
+ const pads=[...box.querySelectorAll(".pad")],m=$("#m");
+ async function flash(i,ms){pads[i].classList.add("on");await sl(ms);pads[i].classList.remove("on")}
+ async function round(){busy=true;seq.push(Math.floor(Math.random()*4));if(seq.length<2)seq.push(Math.floor(Math.random()*4));
+  $("#n").textContent=seq.length;m.textContent="Observe…";await sl(700);
+  for(const i of seq){if(!live())return;await flash(i,520);await sl(200)}
+  if(!live())return;m.textContent="Sua vez";pos=0;busy=false}
+ pads.forEach(p=>p.onclick=async()=>{if(busy)return;const i=+p.dataset.i;flash(i,160);
+  if(i===seq[pos]){pos++;if(pos===seq.length){busy=true;m.textContent="Sequência completa";await sl(900);if(live())round()}}
+  else{busy=true;const ok=seq.length-1;S.best.mem=Math.max(S.best.mem,ok);save();done([["Maior sequência repetida",ok],["Seu recorde",S.best.mem]],ok*8)}});
+ round()}
+
+function attention(box,done,live){const P=["◐","◑","◒","◓","◔","◕"],N=10;let r=0,hits=0,rts=[],t0;
+ function next(){if(!live())return;if(r>=N){const acc=Math.round(hits/N*100),avg=rts.length?(rts.reduce((a,b)=>a+b)/rts.length/1000).toFixed(2)+" s":"—";S.best.att=Math.max(S.best.att,acc);save();return done([["Acertos",hits+" de "+N],["Precisão",acc+"%"],["Tempo médio nos acertos",avg]],hits*4)}
+  const n=r<3?3:r<6?4:5,tg=P[Math.floor(Math.random()*P.length)],ds=P.filter(p=>p!==tg),pos=Math.floor(Math.random()*n*n);
+  const cells=Array.from({length:n*n},(_,i)=>i===pos?tg:ds[Math.floor(Math.random()*ds.length)]);
+  box.innerHTML=`<p class="sub">Rodada ${r+1} de ${N}. Encontre:</p><div class="tgt" aria-label="alvo">${tg}</div><div class="cells" style="grid-template-columns:repeat(${n},1fr)">${cells.map((c,i)=>`<button data-i="${i}" aria-label="símbolo ${c}">${c}</button>`).join("")}</div><p class="msg" aria-live="polite" id="f"></p>`;
+  t0=performance.now();
+  box.querySelectorAll(".cells button").forEach(b=>b.onclick=async()=>{const ok=+b.dataset.i===pos;if(ok){hits++;rts.push(performance.now()-t0)}
+   box.querySelectorAll(".cells button").forEach(x=>x.disabled=true);$("#f").textContent=ok?"Certo":"Era este: posição destacada";
+   if(!ok)box.querySelectorAll(".cells button")[pos].style.borderColor="var(--ok)";await sl(ok?450:1100);r++;next()})}
+ next()}
+
+function focus(box,done,live,dur){const SH=[{s:"●",c:"#2f5bff",n:"círculo azul",t:1},{s:"●",c:"#f59e0b",n:"círculo laranja"},{s:"■",c:"#2f5bff",n:"quadrado azul"},{s:"▲",c:"#2f5bff",n:"triângulo azul"},{s:"■",c:"#f59e0b",n:"quadrado laranja"},{s:"▲",c:"#7c4dff",n:"triângulo violeta"}];
+ const total=Math.round(dur/1.8);let t=0,hits=0,om=0,fa=0,tg=0,cur=null,resp=false,paused=false,timer;
+ box.innerHTML=`<p class="sub">Responda só ao <b>círculo azul</b>.</p><div class="stim" id="st" aria-live="polite"></div><p class="msg" id="fb"></p><div class="row2"><button class="btn" id="rp">Responder</button><button class="btn sec" id="ps">Pausar</button></div><p class="sub" id="pr"></p>`;
+ const st=$("#st"),fb=$("#fb");
+ function respond(){if(!cur||resp||paused)return;resp=true;cur.t?hits++:fa++;fb.textContent="Resposta registrada"}
+ function next(){if(!live()||paused)return;if(cur&&cur.t&&!resp)om++;cur=null;
+  if(t>=total){document.removeEventListener("keydown",key);const sc=tg?Math.round(hits/tg*100):0;S.best.foc=Math.max(S.best.foc,sc);save();return done([["Alvos respondidos",hits+" de "+tg],["Omissões (alvo sem resposta)",om],["Respostas fora do alvo",fa]],hits*4+2)}
+  const pick=Math.random()<.28?SH[0]:SH[1+Math.floor(Math.random()*5)];cur=pick;if(pick.t)tg++;t++;resp=false;fb.textContent="";
+  st.innerHTML=`<div style="color:${pick.c}">${pick.s}<small>${pick.n}</small></div>`;$("#pr").textContent=t+" de "+total;
+  timer=setTimeout(()=>{st.innerHTML="";timer=setTimeout(next,600)},1200)}
+ const key=e=>{if(e.code==="Space"){e.preventDefault();respond()}};document.addEventListener("keydown",key);
+ const old=cleanup;cleanup=()=>{old();clearTimeout(timer);document.removeEventListener("keydown",key)};
+ $("#rp").onclick=respond;
+ $("#ps").onclick=()=>{paused=!paused;$("#ps").textContent=paused?"Continuar":"Pausar";
+  if(paused){clearTimeout(timer);if(cur&&!resp&&cur.t)tg--;if(cur)t--;cur=null;st.innerHTML="";fb.textContent="Em pausa"}else{fb.textContent="";next()}};
+ setTimeout(next,800)}
+
+function breathe(box,done,live,dur){let t0=Date.now(),timer,ended=false;
+ box.innerHTML=`<p class="msg" id="cue" aria-live="polite">Acomode-se e respire normalmente</p><div class="orb" id="orb" aria-hidden="true"></div><p class="sub" id="left"></p>`;
+ const orb=$("#orb"),cue=$("#cue");
+ function cycle(){if(!live()||ended)return;if((Date.now()-t0)/1000>=dur)return end();
+  orb.className="orb in";cue.textContent="Inspire pelo nariz…";
+  timer=setTimeout(()=>{if(!live()||ended)return;orb.className="orb out";cue.textContent="Solte o ar devagar…";timer=setTimeout(cycle,6000)},4000)}
+ const tick=setInterval(()=>{const l=Math.max(0,dur-Math.round((Date.now()-t0)/1000));const e=$("#left");if(e)e.textContent="Restam "+Math.floor(l/60)+":"+String(l%60).padStart(2,"0")},500);
+ function end(){if(ended)return;ended=true;clearTimeout(timer);clearInterval(tick);window.endRes=null;
+  const sec=Math.round((Date.now()-t0)/1000),min=sec/60;S.med+=min;if(min>=.25)award(min*6);else save();
+  cleanup=()=>{};const g=$("#g");if(!g)return;
+  g.innerHTML=`<h3>Pausa concluída</h3><p class="sub" style="margin-inline:auto">Você praticou por ${Math.floor(sec/60)} min ${sec%60} s. Como se sente agora? Não há resposta certa ou errada, e isto não é uma avaliação.</p><div class="row2"><button class="btn sec" data-r>Mais tranquilo(a)</button><button class="btn sec" data-r>Do mesmo jeito</button><button class="btn sec" data-r>Mais agitado(a)</button></div><p class="msg" id="ack"></p><div class="row2"><button class="btn sec" id="menu">Central de jogos</button></div>`;
+  g.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{$("#ack").textContent="Obrigado por observar. Voltar a respirar quando quiser é sempre uma opção."});$("#menu").onclick=()=>show("games")}
+ window.endRes=end;const old=cleanup;cleanup=()=>{old();clearTimeout(timer);clearInterval(tick);window.endRes=null};
+ setTimeout(cycle,1500)}
+
+function renderProgress(){const L=lvl(),cur=40*(L-1)**2,nxt=40*L*L,pct=Math.round((S.xp-cur)/(nxt-cur)*100);
+ $("#stats").innerHTML=[["Nível",L],["Pontos (XP)",S.xp],["Dias seguidos",streak()],["Atividades",S.n]].map(x=>`<div class="card stat"><b>${x[1]}</b><span class="tag">${x[0]}</span></div>`).join("");
+ const bars=[["Memória","Maior sequência: "+S.best.mem,Math.min(100,S.best.mem/12*100)],["Atenção","Melhor precisão: "+S.best.att+"%",S.best.att],["Concentração","Melhor acerto: "+S.best.foc+"%",S.best.foc],["Pausa","Total: "+S.med.toFixed(1)+" min",Math.min(100,S.med/30*100)]];
+ $("#skillbars").innerHTML=`<p class="tag">Próximo nível: ${pct}%</p><div class="bar"><i style="width:${pct}%"></i></div>`+bars.map(b=>`<div><div style="display:flex;justify-content:space-between"><span>${b[0]}</span><span class="tag">${b[1]}</span></div><div class="bar"><i style="width:${b[2]}%"></i></div></div>`).join("")+`<p class="sub">${S.n?"Sugestão: alterne os jogos e termine o dia com uma pausa de respiração.":"Jogue uma partida para começar a ver sua evolução."}</p>`;
+ const M=[["Primeira partida",S.n>=1],["3 dias seguidos",streak()>=3],["Memória: sequência 7",S.best.mem>=7],["Atenção: 90%",S.best.att>=90],["Foco: 80%",S.best.foc>=80],["10 min de pausa",S.med>=10],["Nível 5",L>=5]];
+ $("#medals").innerHTML=M.map(m=>`<li class="${m[1]?"on":""}">${m[1]?"✓ ":""}${m[0]}</li>`).join("")}
+$("#reset").onclick=()=>{if(confirm("Apagar todo o progresso deste aparelho?")){S={xp:0,days:[],best:{mem:0,att:0,foc:0},med:0,n:0};save();renderProgress()}};
+show("home");
+</script>
+</body>
+</html>
